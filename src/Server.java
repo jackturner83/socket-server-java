@@ -2,13 +2,17 @@ package src;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
 
     private ServerSocket serverSocket;
+    private ExecutorService threadPool;
 
     public Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
+        this.threadPool = Executors.newFixedThreadPool(10);
     }
 
     public void startServer() {
@@ -20,13 +24,14 @@ public class Server {
                 System.out.println("A new client has connected!"); // print to terminal that a new client has appeared
                 ClientHandler clientHandler = new ClientHandler(socket); // New client object (normally only able to have one client at a time, this allows us to have more than one client.)
 
-                Thread thread = new Thread(clientHandler);
-                thread.start();
-
+                threadPool.execute(clientHandler);
+                /*
+                 * By using a thread pool, you limit the number of threads that your server creates and instead reuse *a pool of threads to handle client requests. This can help avoid the overhead of creating and *destroying threads for each client request, which can be a costly operation.
+                 */
             }
 
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -48,9 +53,5 @@ public class Server {
         } catch (IOException e){
             e.printStackTrace();
         }
-
-
     }
-
-
 }
