@@ -1,9 +1,7 @@
 package src;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.io.IOError;
 import java.io.IOException;
-import java.net.*;
 
 public class Server {
 
@@ -43,9 +41,14 @@ public class Server {
     }
     public static void main(String[] args){
 
-        ServerSocket serverSocket = new ServerSocket(1234);
-        Server server = new Server(serverSocket);
-        server.startServer();
+        try{
+            ServerSocket serverSocket = new ServerSocket(1234);
+            Server server = new Server(serverSocket);
+            server.startServer();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
 
     }
 
