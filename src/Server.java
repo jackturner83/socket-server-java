@@ -1,21 +1,33 @@
 package src;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import javax.net.ssl.SSLServerSocket;
 
+/**
+ * The Server class sets up a server socket on a specified port and listens for incoming client connections.
+ * Once a client connects, a new thread is created to handle the client's requests.
+ */
 public class Server {
 
     private ServerSocket serverSocket;
     private ExecutorService threadPool;
 
+    /**
+     * Constructs a new Server object with the specified ServerSocket.
+     *
+     * @param serverSocket the ServerSocket to use for the server
+     */
     public Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
         this.threadPool = Executors.newFixedThreadPool(10);
     }
 
+    /**
+     * Starts the server and listens for incoming client connections. Once a client connects, a new thread is created to handle the client's requests.
+     */
     public void startServer() {
 
         try{
@@ -36,6 +48,9 @@ public class Server {
         }
     }
 
+    /**
+     * Closes the server socket.
+     */
     public void closeServerSocket () {
         try {
             if (serverSocket != null){
@@ -45,6 +60,12 @@ public class Server {
             e.printStackTrace();
         }
     }
+
+    /**
+     * The main method that starts the server on the specified port.
+     *
+     * @param args command line arguments (not used)
+     */
     public static void main(String[] args){
 
         try{
